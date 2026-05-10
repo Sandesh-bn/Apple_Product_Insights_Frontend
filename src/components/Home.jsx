@@ -30,12 +30,12 @@ import {
   Cell,
 } from "recharts";
 import { Skeleton } from "./ui/skeleton";
+import { BACKEND_URL } from "../config";
 
 // Register countries locale
 countries.registerLocale(enLocale);
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -49,7 +49,7 @@ export default function Home() {
 
   // Fetch product list
   useEffect(() => {
-    fetch(BACKEND_URL + "api/products")
+    fetch(BACKEND_URL + "/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -62,7 +62,7 @@ export default function Home() {
   useEffect(() => {
     if (selectedProduct) {
       setPriceLoading(true);
-      fetch(BACKEND_URL + `api/products/prices/${encodeURIComponent(selectedProduct)}`)
+      fetch(BACKEND_URL + `/api/products/prices/${encodeURIComponent(selectedProduct)}`)
         .then((res) => res.json())
         .then((data) => {
           setPriceData(data.prices);

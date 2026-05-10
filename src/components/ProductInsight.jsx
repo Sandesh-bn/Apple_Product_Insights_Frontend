@@ -20,6 +20,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import { BACKEND_URL } from "../config";
 
 export default function ProductInsight() {
   const [products, setProducts] = useState([]);
@@ -30,10 +31,9 @@ export default function ProductInsight() {
   const [loading, setLoading] = useState(true);
 
   const popularModels = ["iPhone 13", "iPhone SE", "iPad", "MacBook Air"];
-  const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
-    fetch(BACKEND_URL + "api/products")
+    fetch(BACKEND_URL + "/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -43,7 +43,7 @@ export default function ProductInsight() {
 
     // Fetch Income Group Stats for popular models
     const modelsParam = popularModels.map(m => encodeURIComponent(m)).join(',');
-    fetch(BACKEND_URL + `api/products/income-stats?models=${modelsParam}`)
+    fetch(BACKEND_URL + `/api/products/income-stats?models=${modelsParam}`)
       .then((res) => res.json())
       .then((data) => {
         // Transform for Recharts: [{ incomeGroup: 'High', 'iPhone 13': 800, ... }]
@@ -64,12 +64,12 @@ export default function ProductInsight() {
   useEffect(() => {
     if (selectedProduct) {
       // Fetch regional stats for Box Plot
-      fetch(BACKEND_URL + `api/products/regional/${encodeURIComponent(selectedProduct)}`)
+      fetch(BACKEND_URL + `/api/products/regional/${encodeURIComponent(selectedProduct)}`)
         .then((res) => res.json())
         .then((data) => setStats(data));
 
       // Fetch Treemap data
-      fetch(BACKEND_URL + `api/products/treemap/${encodeURIComponent(selectedProduct)}`)
+      fetch(BACKEND_URL + `/api/products/treemap/${encodeURIComponent(selectedProduct)}`)
         .then((res) => res.json())
         .then((data) => {
           // Transform flat data to hierarchical: Root -> Regions -> Countries

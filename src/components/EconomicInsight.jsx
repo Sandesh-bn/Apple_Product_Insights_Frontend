@@ -23,8 +23,8 @@ import {
 } from "recharts";
 import { Badge } from "./ui/badge";
 import { ArrowRightLeft, ShoppingBasket, Check, X } from "lucide-react";
+import { BACKEND_URL } from "../config";
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function EconomicInsight() {
   const [products, setProducts] = useState([]);
@@ -36,7 +36,7 @@ export default function EconomicInsight() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(BACKEND_URL + "api/products")
+    fetch(BACKEND_URL + "/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -47,7 +47,7 @@ export default function EconomicInsight() {
   useEffect(() => {
     if (modelA && modelB) {
       fetch(
-        BACKEND_URL + `api/products/correlation?modelA=${encodeURIComponent(
+        BACKEND_URL + `/api/products/correlation?modelA=${encodeURIComponent(
           modelA
         )}&modelB=${encodeURIComponent(modelB)}`
       )
@@ -59,7 +59,7 @@ export default function EconomicInsight() {
   useEffect(() => {
     if (basketModels.length > 0) {
       const modelsParam = basketModels.map((m) => encodeURIComponent(m)).join(",");
-      fetch(BACKEND_URL + `api/products/basket?models=${modelsParam}`)
+      fetch(BACKEND_URL + `/api/products/basket?models=${modelsParam}`)
         .then((res) => res.json())
         .then((data) => {
           const transformed = data.map((item) => {
@@ -282,7 +282,7 @@ export default function EconomicInsight() {
                     axisLine={{ stroke: '#e2e8f0' }}
                   />
                   <RechartsTooltip 
-                    cursor={{fill: '#f8fafc'}}
+                    cursor={{fill: 'var(--chart-cursor-fill)'}}
                     content={<BasketTooltip />}
                   />
                   <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: '20px' }} />
