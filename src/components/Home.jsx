@@ -116,32 +116,32 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-white/50 backdrop-blur-sm border-slate-200">
+        <Card className="relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
-            <CardTitle className="text-3xl font-extrabold text-slate-900">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
+            <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="bg-red-50/50 backdrop-blur-sm border-red-100">
+        <Card className="border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100">
           <CardHeader className="pb-2">
-            <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-600">Highest Price</CardDescription>
-            <CardTitle className="text-3xl font-extrabold text-red-900">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
+            <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-700">Highest Price</CardDescription>
+            <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="bg-emerald-50/50 backdrop-blur-sm border-emerald-100">
+        <Card className="backdrop-blur-sm border-emerald-100">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-emerald-600">Lowest Price</CardDescription>
-            <CardTitle className="text-3xl font-extrabold text-emerald-900">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
+            <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
           </CardHeader>
         </Card>
       </div>
 
       <Card className="overflow-hidden border-slate-200 shadow-sm">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+        <CardHeader className="">
           <CardTitle className="text-lg">Price Heat Map (USD)</CardTitle>
           <CardDescription>Hover for country-specific pricing and local currency data.</CardDescription>
         </CardHeader>
-        <CardContent className="p-0 bg-white">
+        <CardContent className="p-0 bg-gray">
           <TooltipProvider>
             <ComposableMap
               projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
@@ -164,7 +164,7 @@ export default function Home() {
                             strokeWidth={0.5}
                             style={{
                               default: { outline: "none" },
-                              hover: { fill: "#6366f1", outline: "none", cursor: "pointer" },
+                              hover: { fill: "#f1ef63", outline: "none", cursor: "pointer" },
                               pressed: { outline: "none" },
                             }}
                           />
