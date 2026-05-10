@@ -132,7 +132,7 @@ export default function ProductInsight() {
       </div>
 
       <Card className="border-slate-200 shadow-sm overflow-hidden">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+        <CardHeader className="border-slate-100">
           <div className="flex items-center gap-2">
             <CardTitle>Box and Whisker Plots by Region</CardTitle>
             <Badge variant="outline" className="bg-white flex gap-1 items-center">
@@ -242,7 +242,7 @@ export default function ProductInsight() {
       </div>
 
       <Card className="border-slate-200 shadow-sm mt-8">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+        <CardHeader className="border-slate-100">
           <CardTitle>Global Market Hierarchy (Treemap)</CardTitle>
           <CardDescription>
             Box size represents the USD price. Grouped by region and country.
@@ -269,7 +269,7 @@ export default function ProductInsight() {
       </Card>
 
       <Card className="border-slate-200 shadow-sm mt-8 mb-10">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+        <CardHeader className="border-slate-100">
           <CardTitle>Pricing by Income Group</CardTitle>
           <CardDescription>
             Average prices of popular models compared across High, Upper-Middle, and Lower-Middle income tiers.
@@ -299,7 +299,7 @@ export default function ProductInsight() {
                   tick={{ fill: '#64748b' }}
                 />
                 <RechartsTooltip 
-                  cursor={{fill: '#f8fafc'}}
+                  cursor={{fill: 'var(--chart-cursor-fill)'}}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
                   formatter={(value) => [`$${value.toFixed(2)}`, "Avg. Price"]}
                 />

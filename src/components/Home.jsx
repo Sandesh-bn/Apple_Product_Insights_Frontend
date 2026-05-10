@@ -116,19 +116,19 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
             <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100">
+        <Card className="yellow-gradient border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-700">Highest Price</CardDescription>
             <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="backdrop-blur-sm border-emerald-100">
+        <Card className="green-gradient backdrop-blur-sm border-emerald-100">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-emerald-600">Lowest Price</CardDescription>
             <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
@@ -205,7 +205,7 @@ export default function Home() {
                 <XAxis type="number" hide />
                 <YAxis dataKey="country" type="category" width={100} fontSize={12} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
-                  cursor={{fill: '#f8fafc'}}
+                  cursor={{fill: 'var(--chart-cursor-fill)'}}
                   formatter={(value) => [`$${value.toFixed(2)}`, "Price"]}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
                 />
@@ -233,7 +233,7 @@ export default function Home() {
                 <XAxis type="number" hide />
                 <YAxis dataKey="country" type="category" width={100} fontSize={12} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
-                  cursor={{fill: '#f8fafc'}}
+                  cursor={{fill: 'var(--chart-cursor-fill)'}}
                   formatter={(value) => [`$${value.toFixed(2)}`, "Price"]}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
                 />
