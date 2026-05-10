@@ -9,12 +9,27 @@ import {
 } from "./ui/select";
 import { Badge } from "./ui/badge";
 import { Info } from "lucide-react";
+import {
+  Treemap,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from "recharts";
 
 export default function ProductInsight() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [stats, setStats] = useState([]);
+  const [treemapData, setTreemapData] = useState(null);
+  const [incomeStats, setIncomeStats] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const popularModels = ["iPhone 13", "iPhone SE", "iPad", "MacBook Air"];
 
   useEffect(() => {
     fetch("http://localhost:5000/api/products")
@@ -24,13 +39,57 @@ export default function ProductInsight() {
         if (data.length > 0) setSelectedProduct(data[0]);
         setLoading(false);
       });
+    
+    // Fetch Income Group Stats for popular models
+    const modelsParam = popularModels.map(m => encodeURIComponent(m)).join(',');
+    fetch(`http://localhost:5000/api/products/income-stats?models=${modelsParam}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Transform for Recharts: [{ incomeGroup: 'High', 'iPhone 13': 800, ... }]
+        const transformed = data.map(group => {
+          const entry = { incomeGroup: group._id };
+          group.models.forEach(m => {
+            entry[m.model] = m.avgPrice;
+          });
+          return entry;
+        });
+        // Sort by income group hierarchy
+        const order = ['High income', 'Upper middle income', 'Lower middle income'];
+        transformed.sort((a, b) => order.indexOf(a.incomeGroup) - order.indexOf(b.incomeGroup));
+        setIncomeStats(transformed);
+      });
   }, []);
 
   useEffect(() => {
     if (selectedProduct) {
+      // Fetch regional stats for Box Plot
       fetch(`http://localhost:5000/api/products/regional/${encodeURIComponent(selectedProduct)}`)
         .then((res) => res.json())
         .then((data) => setStats(data));
+
+      // Fetch Treemap data
+      fetch(`http://localhost:5000/api/products/treemap/${encodeURIComponent(selectedProduct)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Transform flat data to hierarchical: Root -> Regions -> Countries
+          const regionsMap = data.reduce((acc, curr) => {
+            if (!acc[curr.region]) {
+              acc[curr.region] = { name: curr.region, children: [] };
+            }
+            acc[curr.region].children.push({
+              name: curr.country,
+              size: curr.price_usd,
+            });
+            return acc;
+          }, {});
+
+          setTreemapData([
+            {
+              name: "Global",
+              children: Object.values(regionsMap),
+            },
+          ]);
+        });
     }
   }, [selectedProduct]);
 
@@ -181,6 +240,133 @@ export default function ProductInsight() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="border-slate-200 shadow-sm mt-8">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+          <CardTitle>Global Market Hierarchy (Treemap)</CardTitle>
+          <CardDescription>
+            Box size represents the USD price. Grouped by region and country.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="h-[500px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <Treemap
+                data={treemapData}
+                dataKey="size"
+                aspectRatio={4 / 3}
+                stroke="#fff"
+                fill="#8884d8"
+                content={<CustomTreemapContent />}
+              >
+                <RechartsTooltip 
+                  content={<CustomTooltip />} 
+                />
+              </Treemap>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-slate-200 shadow-sm mt-8 mb-10">
+        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+          <CardTitle>Pricing by Income Group</CardTitle>
+          <CardDescription>
+            Average prices of popular models compared across High, Upper-Middle, and Lower-Middle income tiers.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-8">
+          <div className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={incomeStats}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis 
+                  dataKey="incomeGroup" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  fontSize={12}
+                  fontWeight="bold"
+                  tick={{ fill: '#64748b' }}
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  fontSize={12}
+                  tickFormatter={(value) => `$${value}`}
+                  tick={{ fill: '#64748b' }}
+                />
+                <RechartsTooltip 
+                  cursor={{fill: '#f8fafc'}}
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
+                  formatter={(value) => [`$${value.toFixed(2)}`, "Avg. Price"]}
+                />
+                <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
+                <Bar dataKey="iPhone 13" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="iPhone SE" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="iPad" fill="#ec4899" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="MacBook Air" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+const CustomTreemapContent = (props) => {
+  const { x, y, width, height, name, depth, size } = props;
+  
+  // Assign colors based on depth or name
+  const colors = [
+    '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e'
+  ];
+  const fill = depth === 1 ? 'transparent' : colors[Math.floor(Math.random() * colors.length)];
+
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        style={{
+          fill,
+          stroke: '#fff',
+          strokeWidth: 2 / (depth + 1e-10),
+          strokeOpacity: 1,
+        }}
+      />
+      {depth === 2 && width > 40 && height > 20 && (
+        <text
+          x={x + width / 2}
+          y={y + height / 2}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="#fff"
+          fontSize={Math.min(width / 6, 12)}
+          fontWeight="bold"
+          className="pointer-events-none"
+        >
+          {name}
+        </text>
+      )}
+    </g>
+  );
+};
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-slate-900 text-white p-2 rounded-lg shadow-xl text-xs border border-slate-700">
+        <p className="font-bold">{data.name}</p>
+        <p className="text-indigo-300 font-mono text-sm">${data.size?.toFixed(2)}</p>
+      </div>
+    );
+  }
+  return null;
+};
