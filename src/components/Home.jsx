@@ -37,6 +37,30 @@ countries.registerLocale(enLocale);
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
+const productImages = {
+  "iPhone 13": "iphone.png",
+  "iPhone SE": "iphone.png",
+  "iPhone 12": "iphone.png",
+  "AirPods(3rd generation)": "airpod.png",
+  "AirPods Pro": "airpod.png",
+  "AirPods(2nd generation)": "airpod.png",
+  "AirPods Max": "airpodmax.png",
+  "Apple TV 4K": "appletv.png",
+  "Apple Watch SE": "applewatch1.png",
+  "Apple Watch Series 3": "applewatch2.jpg",
+  "iPad": "ipad.jpg",
+  "iPad Pro": "ipad.jpg",
+  "Apple Pencil (2nd generation)": "applepencil.png",
+  "MacBook Air": "macbook.png",
+  "Magic Mouse": "magicmouse.png",
+  "Apple TV HD": "appletv.png"
+};
+
+const getProductImage = (model) => {
+  const filename = productImages[model] || "iphone.png";
+  return new URL(`../assets/${filename}`, import.meta.url).href;
+};
+
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -120,7 +144,27 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="bg-white border border-zinc-200 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden relative min-h-[120px]">
+          <CardContent className="p-0 h-full flex">
+            <div className="w-1/2 p-2 flex flex-col justify-end">
+              <h3 className="text-sm font-bold leading-tight text-zinc-900 dark:text-white uppercase tracking-tighter">
+                {selectedProduct}
+              </h3>
+            </div>
+            <div className="w-1/2 flex items-center justify-center bg-zinc-50/30 dark:bg-zinc-800/20">
+              {priceLoading ? (
+                <Skeleton className="h-16 w-16 rounded-full" />
+              ) : (
+                <img 
+                  src={getProductImage(selectedProduct)} 
+                  alt={selectedProduct} 
+                  className="max-h-20 max-w-full object-contain"
+                />
+              )}
+            </div>
+          </CardContent>
+        </Card>
         <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
