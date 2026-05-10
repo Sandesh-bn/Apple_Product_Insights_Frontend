@@ -93,7 +93,7 @@ export default function Home() {
   const currentMin = metrics?.min || 400;
   const dynamicColorScale = scaleLinear()
     .domain([currentMin, currentMax])
-    .range(["#fee2e2", "#991b1b"]);
+    .range(["#f0fdf4", "#06ae47"]);
 
   return (
     <div className="space-y-6 p-6">
