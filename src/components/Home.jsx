@@ -158,7 +158,7 @@ export default function Home() {
         </Card>
       </div>
 
-      <Card className="green-gradient overflow-hidden border-slate-200 shadow-sm">
+      <Card className="overflow-hidden border-slate-200 shadow-sm">
         <CardHeader className="">
           <CardTitle className="text-lg">Price Heat Map (USD)</CardTitle>
           <CardDescription>Hover for country-specific pricing and local currency data.</CardDescription>
@@ -175,8 +175,8 @@ export default function Home() {
                   projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
                   height={400}
                 >
-                  <Sphere stroke="#f1f5f9" strokeWidth={0.5} />
-                  <Graticule stroke="#f1f5f9" strokeWidth={0.5} />
+                  <Sphere stroke="#dde7f1" strokeWidth={0.5} />
+                  <Graticule stroke="#bfebf2" strokeWidth={0.5} />
                   <Geographies geography={geoUrl}>
                     {({ geographies }) =>
                       geographies.map((geo) => {
@@ -192,7 +192,7 @@ export default function Home() {
                                 strokeWidth={0.5}
                                 style={{
                                   default: { outline: "none" },
-                                  hover: { fill: "#f1ef63", outline: "none", cursor: "pointer" },
+                                  hover: { fill: "#63f1a3", outline: "none", cursor: "pointer" },
                                   pressed: { outline: "none" },
                                 }}
                               />
