@@ -11,7 +11,8 @@ import {
   ChevronRight,
   Sun,
   Moon,
-  Monitor
+  Monitor,
+  Apple
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/button";
@@ -75,9 +76,9 @@ export default function Sidebar() {
           {!isCollapsed && (
             <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-                <TrendingUp className="h-5 w-5" />
+                <Apple className="h-5 w-5" />
               </div>
-              <span className="truncate">InsightDash</span>
+              <span className="truncate">Product Insight</span>
             </div>
           )}
           {isCollapsed && (
@@ -125,9 +126,7 @@ export default function Sidebar() {
             onClick={toggleTheme}
           >
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            {(!isCollapsed || isMobileOpen) && (
-              <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
-            )}
+            
           </Button>
 
           {/* Collapse Toggle (Desktop only) */}

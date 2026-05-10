@@ -87,9 +87,9 @@ export default function EconomicInsight() {
             Analyze the relationship between different product categories across countries.
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200">
+        <div className="flex items-center gap-2 p-1 rounded-lg border border-slate-200">
           <Select value={modelA} onValueChange={setModelA}>
-            <SelectTrigger className="w-[180px] bg-white border-none shadow-none">
+            <SelectTrigger className="w-[180px]  border-none shadow-none">
               <SelectValue placeholder="Product X" />
             </SelectTrigger>
             <SelectContent>
@@ -102,7 +102,7 @@ export default function EconomicInsight() {
           </Select>
           <ArrowRightLeft className="w-4 h-4 text-slate-400" />
           <Select value={modelB} onValueChange={setModelB}>
-            <SelectTrigger className="w-[180px] bg-white border-none shadow-none">
+            <SelectTrigger className="w-[180px] border-none shadow-none">
               <SelectValue placeholder="Product Y" />
             </SelectTrigger>
             <SelectContent>
@@ -118,7 +118,7 @@ export default function EconomicInsight() {
 
       <div className="grid grid-cols-1 gap-6">
         <Card className="border-slate-200 shadow-sm overflow-hidden">
-          <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+          <CardHeader className="border-slate-100">
             <div className="flex justify-between items-center">
               <div>
                 <CardTitle>Cross-Product Price Correlation</CardTitle>
@@ -183,40 +183,40 @@ export default function EconomicInsight() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Correlation Strength</CardTitle>
+            <CardTitle className="text-sm font-bold uppercase tracking-wider">Correlation Strength</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm ">
               A tight cluster along a diagonal line suggests that prices for these two products are highly correlated. If the dots are scattered randomly, the pricing strategies for these categories may be independent.
             </p>
           </CardContent>
         </Card>
         <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">X-Axis Peak</CardTitle>
+            <CardTitle className="text-sm font-bold  uppercase tracking-wider">X-Axis Peak</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-slate-900">
+            <div className="text-2xl font-black ">
               ${Math.max(...correlationData.map(d => d.priceA), 0).toFixed(2)}
             </div>
-            <p className="text-xs text-slate-400 mt-1">Maximum price recorded for {modelA}.</p>
+            <p className="text-xs  mt-1">Maximum price recorded for {modelA}.</p>
           </CardContent>
         </Card>
         <Card className="border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold text-slate-500 uppercase tracking-wider">Y-Axis Peak</CardTitle>
+            <CardTitle className="text-sm font-bold  uppercase tracking-wider">Y-Axis Peak</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-black text-slate-900">
+            <div className="text-2xl font-black ">
               ${Math.max(...correlationData.map(d => d.priceB), 0).toFixed(2)}
             </div>
-            <p className="text-xs text-slate-400 mt-1">Maximum price recorded for {modelB}.</p>
+            <p className="text-xs  mt-1">Maximum price recorded for {modelB}.</p>
           </CardContent>
         </Card>
       </div>
       <div className="grid grid-cols-1 gap-6 mt-10">
         <Card className="border-slate-200 shadow-sm">
-          <CardHeader className="bg-slate-50/50 border-b border-slate-100">
+          <CardHeader className="border-slate-100">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
                 <CardTitle className="flex items-center gap-2 text-xl">
@@ -248,7 +248,7 @@ export default function EconomicInsight() {
                   <button
                     key={p}
                     onClick={() => toggleModel(p)}
-                    className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 text-xs font-medium hover:bg-slate-50 transition-colors flex items-center gap-1 text-slate-600"
+                    className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 text-xs font-medium hover:bg-slate-400 transition-colors flex items-center gap-1 "
                   >
                     <Check className="w-3 h-3 text-emerald-500" /> Add {p}
                   </button>

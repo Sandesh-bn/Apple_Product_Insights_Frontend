@@ -73,7 +73,7 @@ export default function Profile() {
 
           <div className="grid gap-4 md:grid-cols-2">
              <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
-                <CardContent className="pt-6">
+                <CardContent className="">
                    <div className="flex items-center gap-4">
                       <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 group-hover:scale-110 transition-transform">
                          <Shield className="h-5 w-5" />
@@ -86,7 +86,7 @@ export default function Profile() {
                 </CardContent>
              </Card>
              <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
-                <CardContent className="pt-6">
+                <CardContent >
                    <div className="flex items-center gap-4">
                       <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 group-hover:scale-110 transition-transform">
                          <Bell className="h-5 w-5" />

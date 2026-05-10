@@ -29,6 +29,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { Skeleton } from "./ui/skeleton";
 
 // Register countries locale
 countries.registerLocale(enLocale);
@@ -41,6 +42,7 @@ export default function Home() {
   const [priceData, setPriceData] = useState([]);
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [priceLoading, setPriceLoading] = useState(false);
   const [top10, setTop10] = useState([]);
   const [bottom10, setBottom10] = useState([]);
 
@@ -58,6 +60,7 @@ export default function Home() {
   // Fetch price data when product changes
   useEffect(() => {
     if (selectedProduct) {
+      setPriceLoading(true);
       fetch(`http://localhost:5000/api/products/prices/${encodeURIComponent(selectedProduct)}`)
         .then((res) => res.json())
         .then((data) => {
@@ -68,6 +71,7 @@ export default function Home() {
           const sorted = [...data.prices].sort((a, b) => b.price_usd - a.price_usd);
           setTop10(sorted.slice(0, 10));
           setBottom10(sorted.slice(-10).reverse());
+          setPriceLoading(false);
         });
     }
   }, [selectedProduct]);
@@ -119,74 +123,100 @@ export default function Home() {
         <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
-            <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
+            <div className="h-9 flex items-center">
+              {priceLoading ? (
+                <Skeleton className="h-7 w-32" />
+              ) : (
+                <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
+              )}
+            </div>
           </CardHeader>
         </Card>
         <Card className="yellow-gradient border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-700">Highest Price</CardDescription>
-            <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
+            <div className="h-9 flex items-center">
+              {priceLoading ? (
+                <Skeleton className="h-7 w-32" />
+              ) : (
+                <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
+              )}
+            </div>
           </CardHeader>
         </Card>
         <Card className="green-gradient backdrop-blur-sm border-emerald-100">
           <CardHeader className="pb-2">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-emerald-600">Lowest Price</CardDescription>
-            <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
+            <div className="h-9 flex items-center">
+              {priceLoading ? (
+                <Skeleton className="h-7 w-32" />
+              ) : (
+                <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
+              )}
+            </div>
           </CardHeader>
         </Card>
       </div>
 
-      <Card className="overflow-hidden border-slate-200 shadow-sm">
+      <Card className="green-gradient overflow-hidden border-slate-200 shadow-sm">
         <CardHeader className="">
           <CardTitle className="text-lg">Price Heat Map (USD)</CardTitle>
           <CardDescription>Hover for country-specific pricing and local currency data.</CardDescription>
         </CardHeader>
         <CardContent className="p-0 bg-gray">
-          <TooltipProvider>
-            <ComposableMap
-              projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
-              height={400}
-            >
-              <Sphere stroke="#f1f5f9" strokeWidth={0.5} />
-              <Graticule stroke="#f1f5f9" strokeWidth={0.5} />
-              <Geographies geography={geoUrl}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const iso3 = countries.numericToAlpha3(geo.id) || geo.properties?.ISO_A3;
-                    const d = dataMap[iso3];
-                    return (
-                      <Tooltip key={geo.rsmKey}>
-                        <TooltipTrigger asChild>
-                          <Geography
-                            geography={geo}
-                            fill={d ? dynamicColorScale(d.price_usd) : "#f8fafc"}
-                            stroke="#e2e8f0"
-                            strokeWidth={0.5}
-                            style={{
-                              default: { outline: "none" },
-                              hover: { fill: "#f1ef63", outline: "none", cursor: "pointer" },
-                              pressed: { outline: "none" },
-                            }}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-slate-900 text-white p-3 shadow-xl border-none rounded-lg">
-                          <div className="text-sm font-bold">{geo.properties.name}</div>
-                          {d ? (
-                            <div className="space-y-1 mt-1">
-                              <div className="text-lg font-black text-indigo-300">${d.price_usd.toFixed(2)}</div>
-                              <div className="text-[10px] text-slate-400 uppercase tracking-tighter">Currency: {d.currencyCode}</div>
-                            </div>
-                          ) : (
-                            <div className="text-xs text-slate-400 italic mt-1">Data not available</div>
-                          )}
-                        </TooltipContent>
-                      </Tooltip>
-                    );
-                  })
-                }
-              </Geographies>
-            </ComposableMap>
-          </TooltipProvider>
+          <div className="h-[400px] w-full">
+            {priceLoading ? (
+              <div className="h-full w-full flex items-center justify-center p-8">
+                <Skeleton className="h-full w-full rounded-xl" />
+              </div>
+            ) : (
+              <TooltipProvider>
+                <ComposableMap
+                  projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
+                  height={400}
+                >
+                  <Sphere stroke="#f1f5f9" strokeWidth={0.5} />
+                  <Graticule stroke="#f1f5f9" strokeWidth={0.5} />
+                  <Geographies geography={geoUrl}>
+                    {({ geographies }) =>
+                      geographies.map((geo) => {
+                        const iso3 = countries.numericToAlpha3(geo.id) || geo.properties?.ISO_A3;
+                        const d = dataMap[iso3];
+                        return (
+                          <Tooltip key={geo.rsmKey}>
+                            <TooltipTrigger asChild>
+                              <Geography
+                                geography={geo}
+                                fill={d ? dynamicColorScale(d.price_usd) : "#f8fafc"}
+                                stroke="#e2e8f0"
+                                strokeWidth={0.5}
+                                style={{
+                                  default: { outline: "none" },
+                                  hover: { fill: "#f1ef63", outline: "none", cursor: "pointer" },
+                                  pressed: { outline: "none" },
+                                }}
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-slate-900 text-white p-3 shadow-xl border-none rounded-lg">
+                              <div className="text-sm font-bold">{geo.properties.name}</div>
+                              {d ? (
+                                <div className="space-y-1 mt-1">
+                                  <div className="text-lg font-black text-indigo-300">${d.price_usd.toFixed(2)}</div>
+                                  <div className="text-[10px] text-slate-400 uppercase tracking-tighter">Currency: {d.currencyCode}</div>
+                                </div>
+                              ) : (
+                                <div className="text-xs text-slate-400 italic mt-1">Data not available</div>
+                              )}
+                            </TooltipContent>
+                          </Tooltip>
+                        );
+                      })
+                    }
+                  </Geographies>
+                </ComposableMap>
+              </TooltipProvider>
+            )}
+          </div>
         </CardContent>
       </Card>
 
