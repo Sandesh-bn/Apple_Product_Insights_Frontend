@@ -165,8 +165,8 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-        <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <CardHeader className="pb-2">
+        <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[120px] flex flex-col justify-center">
+          <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
             <div className="h-9 flex items-center">
               {priceLoading ? (
@@ -177,8 +177,8 @@ export default function Home() {
             </div>
           </CardHeader>
         </Card>
-        <Card className="yellow-gradient border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100">
-          <CardHeader className="pb-2">
+        <Card className="yellow-gradient border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100 min-h-[120px] flex flex-col justify-center">
+          <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-700">Highest Price</CardDescription>
             <div className="h-9 flex items-center">
               {priceLoading ? (
@@ -189,8 +189,8 @@ export default function Home() {
             </div>
           </CardHeader>
         </Card>
-        <Card className="green-gradient backdrop-blur-sm border-emerald-100">
-          <CardHeader className="pb-2">
+        <Card className="green-gradient backdrop-blur-sm border-emerald-100 min-h-[120px] flex flex-col justify-center">
+          <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-emerald-600">Lowest Price</CardDescription>
             <div className="h-9 flex items-center">
               {priceLoading ? (
