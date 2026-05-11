@@ -123,7 +123,7 @@ export default function ProductInsight() {
             </SelectTrigger>
             <SelectContent>
               {products.map((p) => (
-                <SelectItem  className={"text-base"} key={p} value={p}>
+                <SelectItem className={"text-base"} key={p} value={p}>
                   {p}
                 </SelectItem>
               ))}
@@ -341,15 +341,13 @@ const CustomTreemapContent = (props) => {
           strokeOpacity: 1,
         }}
       />
-      {depth === 2 && width > 40 && height > 20 && (
+      {depth > 0 && width > 30 && height > 14 && (
         <text
-          x={x + width / 2}
-          y={y + height / 2}
-          textAnchor="middle"
-          dominantBaseline="middle"
+          x={x + 4}
+          y={y + 14}
           fill="#fff"
-          fontSize={Math.min(width / 6, 12)}
-          fontWeight="bold"
+          fontSize={Math.min(width / 5, 15)}
+
           className="pointer-events-none"
         >
           {name}
