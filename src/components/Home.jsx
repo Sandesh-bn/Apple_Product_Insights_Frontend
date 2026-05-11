@@ -145,7 +145,7 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-white border border-zinc-200 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden relative min-h-[120px]">
+        <Card className="bg-white  shadow-sm dark:border-zinc-800 dark:bg-zinc-900 overflow-hidden relative min-h-[120px]">
           <CardContent className="p-0 h-full flex">
             <div className="w-1/2 p-2 flex flex-col justify-end">
               <h3 className="text-sm font-bold leading-tight text-zinc-900 dark:text-white uppercase tracking-tighter">
@@ -165,26 +165,26 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-        <Card className=" relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[120px] flex flex-col justify-center">
+        <Card className=" relative rounded-2xl  bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[120px] flex flex-col justify-center">
           <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
             <div className="h-9 flex items-center">
-              {priceLoading ? (
+              {(priceLoading || !metrics) ? (
                 <Skeleton className="h-7 w-32" />
               ) : (
-                <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || "0.00"}</CardTitle>
+                <CardTitle className="text-3xl font-extrabold ">${metrics?.avg.toFixed(2) || ""}</CardTitle>
               )}
             </div>
           </CardHeader>
         </Card>
-        <Card className="yellow-gradient border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100 min-h-[120px] flex flex-col justify-center">
+        <Card className="yellow-gradient  bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 border-red-100 min-h-[120px] flex flex-col justify-center">
           <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-red-700">Highest Price</CardDescription>
             <div className="h-9 flex items-center">
-              {priceLoading ? (
+              {(priceLoading || !metrics) ? (
                 <Skeleton className="h-7 w-32" />
               ) : (
-                <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || "0.00"}</CardTitle>
+                <CardTitle className="text-3xl font-extrabold text-red-600">${metrics?.max.toFixed(2) || ""}</CardTitle>
               )}
             </div>
           </CardHeader>
@@ -193,10 +193,10 @@ export default function Home() {
           <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider text-emerald-600">Lowest Price</CardDescription>
             <div className="h-9 flex items-center">
-              {priceLoading ? (
+              {(priceLoading || !metrics) ? (
                 <Skeleton className="h-7 w-32" />
               ) : (
-                <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || "0.00"}</CardTitle>
+                <CardTitle className="text-3xl font-extrabold text-emerald-500">${metrics?.min.toFixed(2) || ""}</CardTitle>
               )}
             </div>
           </CardHeader>
@@ -242,7 +242,7 @@ export default function Home() {
                                 }}
                               />
                             </TooltipTrigger>
-                            <TooltipContent className="bg-slate-900 text-white p-3 shadow-xl border-none rounded-lg">
+                            <TooltipContent className="bg-slate-900  p-3 shadow-xl border-none rounded-lg">
                               <div className="text-sm font-bold">{geo.properties.name}</div>
                               {d ? (
                                 <div className="space-y-1 mt-1">
