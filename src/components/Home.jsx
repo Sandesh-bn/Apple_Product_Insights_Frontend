@@ -117,7 +117,7 @@ export default function Home() {
   const currentMin = metrics?.min || 400;
   const dynamicColorScale = scaleLinear()
     .domain([currentMin, currentMax])
-    .range(["#f0fdf4", "#06ae47"]);
+    .range(["#aff2c3", "#06ae47"]);
 
   return (
     <div className="space-y-6 p-6">
@@ -130,12 +130,12 @@ export default function Home() {
         </div>
         <div className="w-[280px]">
           <Select value={selectedProduct} onValueChange={handleProductChange}>
-            <SelectTrigger>
+            <SelectTrigger className={"text-base"}>
               <SelectValue placeholder="Select a product" />
             </SelectTrigger>
             <SelectContent>
               {products.map((p) => (
-                <SelectItem key={p} value={p}>
+                <SelectItem className={"text-base"} key={p} value={p}>
                   {p}
                 </SelectItem>
               ))}
@@ -220,8 +220,8 @@ export default function Home() {
                   projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
                   height={400}
                 >
-                  <Sphere stroke="#dde7f1" strokeWidth={0.5} />
-                  <Graticule stroke="#bfebf2" strokeWidth={0.5} />
+                  <Sphere stroke="#c1d7ed" strokeWidth={0.5} />
+                  <Graticule stroke="#95dfeb" strokeWidth={0.5} />
                   <Geographies geography={geoUrl}>
                     {({ geographies }) =>
                       geographies.map((geo) => {
@@ -233,7 +233,7 @@ export default function Home() {
                               <Geography
                                 geography={geo}
                                 fill={d ? dynamicColorScale(d.price_usd) : "#f8fafc"}
-                                stroke="#e2e8f0"
+                                stroke="#c6daf3"
                                 strokeWidth={0.5}
                                 style={{
                                   default: { outline: "none" },
@@ -247,10 +247,10 @@ export default function Home() {
                               {d ? (
                                 <div className="space-y-1 mt-1">
                                   <div className="text-lg font-black text-indigo-300">${d.price_usd.toFixed(2)}</div>
-                                  <div className="text-[10px] text-slate-400 uppercase tracking-tighter">Currency: {d.currencyCode}</div>
+                                  <div className="text-[10px] uppercase tracking-tighter">Currency: {d.currencyCode}</div>
                                 </div>
                               ) : (
-                                <div className="text-xs text-slate-400 italic mt-1">Data not available</div>
+                                <div className="text-xs italic mt-1">Data not available</div>
                               )}
                             </TooltipContent>
                           </Tooltip>

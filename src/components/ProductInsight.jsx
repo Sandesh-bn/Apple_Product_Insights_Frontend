@@ -104,7 +104,7 @@ export default function ProductInsight() {
   };
 
   if (loading) {
-    return <div className="p-10 text-center font-bold text-slate-500 animate-pulse">Loading regional insights...</div>;
+    return <div className="p-10 text-center font-bold animate-pulse">Loading regional insights...</div>;
   }
 
   return (
@@ -118,12 +118,12 @@ export default function ProductInsight() {
         </div>
         <div className="w-[280px]">
           <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-white text-base">
               <SelectValue placeholder="Select a product" />
             </SelectTrigger>
             <SelectContent>
               {products.map((p) => (
-                <SelectItem key={p} value={p}>
+                <SelectItem  className={"text-base"} key={p} value={p}>
                   {p}
                 </SelectItem>
               ))}
@@ -136,7 +136,7 @@ export default function ProductInsight() {
         <CardHeader className="border-slate-100">
           <div className="flex items-center gap-2">
             <CardTitle>Box and Whisker Plots by Region</CardTitle>
-            <Badge variant="outline" className="bg-white flex gap-1 items-center">
+            <Badge variant="outline" className="bg-white flex gap-1 text-base items-center">
               <Info className="w-3 h-3" /> {selectedProduct}
             </Badge>
           </div>
@@ -147,7 +147,7 @@ export default function ProductInsight() {
         <CardContent className="pt-10 pb-6 overflow-x-auto">
           <div className="min-w-[800px] h-[450px] relative flex items-end justify-around px-10">
             {/* Y-Axis Labels */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col justify-between text-[10px] text-slate-400 font-bold border-r border-slate-100 pr-2">
+            <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col justify-between text-[10px] font-bold border-r border-slate-100 pr-2">
               <span>${globalMax.toFixed(0)}</span>
               <span>${((globalMax + globalMin) / 2).toFixed(0)}</span>
               <span>${globalMin.toFixed(0)}</span>
@@ -198,19 +198,19 @@ export default function ProductInsight() {
                     <div className="font-bold border-b border-slate-700 mb-2 pb-1 text-xs">{region.region}</div>
                     <div className="space-y-0.5">
                       <div className="flex justify-between gap-4"><span>Max:</span> <span className="font-mono font-bold">${region.max?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4 text-slate-400"><span>Q3:</span> <span className="font-mono">${region.q3?.toFixed(2) || "0.00"}</span></div>
+                      <div className="flex justify-between gap-4 "><span>Q3:</span> <span className="font-mono">${region.q3?.toFixed(2) || "0.00"}</span></div>
                       <div className="flex justify-between gap-4 text-indigo-300 font-bold"><span>Median:</span> <span className="font-mono">${region.median?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4 text-slate-400"><span>Q1:</span> <span className="font-mono">${region.q1?.toFixed(2) || "0.00"}</span></div>
+                      <div className="flex justify-between gap-4"><span>Q1:</span> <span className="font-mono">${region.q1?.toFixed(2) || "0.00"}</span></div>
                       <div className="flex justify-between gap-4"><span>Min:</span> <span className="font-mono font-bold">${region.min?.toFixed(2) || "0.00"}</span></div>
                     </div>
-                    <div className="mt-2 pt-1 border-t border-slate-700 text-[9px] text-slate-500 text-center">
+                    <div className="mt-2 pt-1 border-t border-slate-700 text-[9px] text-center">
                       Sample: {region.count} countries
                     </div>
                   </div>
                 </div>
 
                 {/* Label */}
-                <div className="text-[11px] font-bold text-slate-600 text-center px-1 leading-tight h-8 flex items-center">
+                <div className="text-[11px] font-bold text-center px-1 leading-tight h-8 flex items-center">
                   {region.region}
                 </div>
               </div>
@@ -222,20 +222,20 @@ export default function ProductInsight() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <Card className="border-slate-200">
           <CardHeader>
-            <CardTitle className="text-sm uppercase tracking-wide text-slate-500">Key Observation</CardTitle>
+            <CardTitle className="text-sm uppercase tracking-wide">Key Observation</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm">
               The height of the indigo box represents the **Interquartile Range (IQR)**. A taller box indicates higher price variability within that region, while a shorter box suggests more consistent pricing across member countries.
             </p>
           </CardContent>
         </Card>
         <Card className="border-slate-200">
           <CardHeader>
-            <CardTitle className="text-sm uppercase tracking-wide text-slate-500">Outlier Analysis</CardTitle>
+            <CardTitle className="text-sm uppercase tracking-wide">Outlier Analysis</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm">
               Whiskers extending far beyond the box indicate extreme price differences in certain countries. For example, Brazil often acts as a significant outlier in the Latin America region due to high import taxes.
             </p>
           </CardContent>

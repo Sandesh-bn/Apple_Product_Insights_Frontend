@@ -91,25 +91,25 @@ export default function EconomicInsight() {
         </div>
         <div className="flex items-center gap-2 p-1 rounded-lg border border-slate-200">
           <Select value={modelA} onValueChange={setModelA}>
-            <SelectTrigger className="w-[180px]  border-none shadow-none">
+            <SelectTrigger className="w-[180px] text-base  border-none shadow-none">
               <SelectValue placeholder="Product X" />
             </SelectTrigger>
             <SelectContent>
               {products.map((p) => (
-                <SelectItem key={`A-${p}`} value={p}>
+                <SelectItem  className={"text-base"} key={`A-${p}`} value={p}>
                   {p}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <ArrowRightLeft className="w-4 h-4 text-slate-400" />
+          <ArrowRightLeft className="w-4 h-4 " />
           <Select value={modelB} onValueChange={setModelB}>
-            <SelectTrigger className="w-[180px] border-none shadow-none">
+            <SelectTrigger className="w-[180px] text-base border-none shadow-none">
               <SelectValue placeholder="Product Y" />
             </SelectTrigger>
             <SelectContent>
               {products.map((p) => (
-                <SelectItem key={`B-${p}`} value={p}>
+                <SelectItem  className={"text-base"} key={`B-${p}`} value={p}>
                   {p}
                 </SelectItem>
               ))}
@@ -316,7 +316,7 @@ const BasketTooltip = ({ active, payload, label }) => {
             <div key={i} className="flex justify-between items-center text-xs">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.fill }}></div>
-                <span className="text-slate-400">{p.name}:</span>
+                <span >{p.name}:</span>
               </div>
               <span className="font-mono font-bold">${p.value.toFixed(2)}</span>
             </div>
@@ -339,11 +339,11 @@ const CustomTooltip = ({ active, payload, modelA, modelB }) => {
       <div className="bg-slate-900 text-white p-3 rounded-xl shadow-2xl border border-slate-700 min-w-[150px]">
         <p className="font-bold text-indigo-300 border-b border-slate-700 pb-2 mb-2">{data.country}</p>
         <div className="space-y-1">
-          <div className="flex justify-between gap-4 text-xs text-slate-400">
+          <div className="flex justify-between gap-4 text-xs ">
             <span>{modelA}:</span>
             <span className="text-white font-mono">${data.priceA.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between gap-4 text-xs text-slate-400">
+          <div className="flex justify-between gap-4 text-xs ">
             <span>{modelB}:</span>
             <span className="text-white font-mono">${data.priceB.toFixed(2)}</span>
           </div>
