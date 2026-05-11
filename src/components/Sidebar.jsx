@@ -12,7 +12,8 @@ import {
   Sun,
   Moon,
   Monitor,
-  Apple
+  Apple,
+  Database
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import { Button } from "./ui/button";
@@ -22,6 +23,7 @@ const navItems = [
   { name: "Home", path: "/", icon: Home },
   { name: "Product Insight", path: "/product-insight", icon: PackageSearch },
   { name: "Economic Insight", path: "/economic-insight", icon: TrendingUp },
+  { name: "Data Explorer", path: "/data-explorer", icon: Database },
   { name: "Profile", path: "/profile", icon: User },
 ];
 
