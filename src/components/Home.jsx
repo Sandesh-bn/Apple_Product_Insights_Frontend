@@ -165,7 +165,7 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-        <Card className="blue-gradient relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[120px] flex flex-col justify-center">
+        <Card className=" relative rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[120px] flex flex-col justify-center">
           <CardHeader className="py-0">
             <CardDescription className="text-xs uppercase font-bold tracking-wider">Global Average</CardDescription>
             <div className="h-9 flex items-center">
