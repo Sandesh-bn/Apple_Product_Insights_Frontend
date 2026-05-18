@@ -32,6 +32,7 @@ export default function DataExplorer() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [productFilter, setProductFilter] = useState("all");
   const [countryFilter, setCountryFilter] = useState("all");
   const [regionFilter, setRegionFilter] = useState("all");
   const [incomeFilter, setIncomeFilter] = useState("all");
@@ -53,6 +54,7 @@ export default function DataExplorer() {
   }, []);
 
   // Filter options
+  const uniqueProducts = useMemo(() => [...new Set(data.map(item => item.model))].sort(), [data]);
   const uniqueCountries = useMemo(() => [...new Set(data.map(item => item.country))].sort(), [data]);
   const uniqueRegions = useMemo(() => [...new Set(data.map(item => item.region))].sort(), [data]);
   const uniqueIncomeGroups = useMemo(() => [...new Set(data.map(item => item.incomeGroup))].sort(), [data]);
@@ -62,13 +64,14 @@ export default function DataExplorer() {
     return data.filter(item => {
       const matchesSearch = item.model.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            item.country.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesProduct = productFilter === "all" || item.model === productFilter;
       const matchesCountry = countryFilter === "all" || item.country === countryFilter;
       const matchesRegion = regionFilter === "all" || item.region === regionFilter;
       const matchesIncome = incomeFilter === "all" || item.incomeGroup === incomeFilter;
       
-      return matchesSearch && matchesCountry && matchesRegion && matchesIncome;
+      return matchesSearch && matchesProduct && matchesCountry && matchesRegion && matchesIncome;
     });
-  }, [data, searchTerm, countryFilter, regionFilter, incomeFilter]);
+  }, [data, searchTerm, productFilter, countryFilter, regionFilter, incomeFilter]);
 
   // Sorting logic
   const sortedData = useMemo(() => {
@@ -107,6 +110,7 @@ export default function DataExplorer() {
 
   const resetFilters = () => {
     setSearchTerm("");
+    setProductFilter("all");
     setCountryFilter("all");
     setRegionFilter("all");
     setIncomeFilter("all");
@@ -140,6 +144,16 @@ export default function DataExplorer() {
               />
             </div>
             <div className="flex flex-wrap items-center gap-3">
+              <Select value={productFilter} onValueChange={(val) => { setProductFilter(val); setCurrentPage(1); }}>
+                <SelectTrigger className="w-full sm:w-[180px] bg-background border-none shadow-sm h-14 rounded-full text-base font-medium px-6">
+                  <SelectValue placeholder="Product" />
+                </SelectTrigger>
+                <SelectContent className="rounded-2xl border-none shadow-xl">
+                  <SelectItem value="all">All Products</SelectItem>
+                  {uniqueProducts.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                </SelectContent>
+              </Select>
+
               <Select value={regionFilter} onValueChange={(val) => { setRegionFilter(val); setCurrentPage(1); }}>
                 <SelectTrigger className="w-full sm:w-[180px] bg-background border-none shadow-sm h-14 rounded-full text-base font-medium px-6">
                   <SelectValue placeholder="Region" />
