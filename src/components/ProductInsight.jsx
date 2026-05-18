@@ -103,10 +103,6 @@ export default function ProductInsight() {
     return 100 - ((price - globalMin) / range) * 100;
   };
 
-  if (loading) {
-    return <div className="p-10 text-center font-bold animate-pulse">Loading regional insights...</div>;
-  }
-
   return (
     <div className="flex flex-col w-full pb-24">
       {/* Header Section */}
@@ -117,21 +113,33 @@ export default function ProductInsight() {
         <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-10 max-w-2xl">
           Explore price consistency and distribution across global regions.
         </p>
-        <div className="w-full max-w-[300px] mx-auto mb-8">
-          <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-            <SelectTrigger className="text-lg rounded-full h-14 bg-secondary/80 hover:bg-secondary border-none px-6 transition-colors shadow-sm font-medium mx-auto flex justify-center text-center gap-2">
-              <SelectValue placeholder="Select a product" />
-            </SelectTrigger>
-            <SelectContent className="rounded-2xl shadow-xl border-none">
-              {products.map((p) => (
-                <SelectItem className="text-base py-3 cursor-pointer justify-center text-center" key={p} value={p}>
-                  {p}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {loading ? (
+          <div className="w-full max-w-[300px] mx-auto mb-8 h-14 bg-secondary/50 rounded-full animate-pulse"></div>
+        ) : (
+          <div className="w-full max-w-[300px] mx-auto mb-8">
+            <Select value={selectedProduct} onValueChange={setSelectedProduct}>
+              <SelectTrigger className="text-lg rounded-full h-14 bg-secondary/80 hover:bg-secondary border-none px-6 transition-colors shadow-sm font-medium mx-auto flex justify-center text-center gap-2">
+                <SelectValue placeholder="Select a product" />
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl shadow-xl border-none">
+                {products.map((p) => (
+                  <SelectItem className="text-base py-3 cursor-pointer justify-center text-center" key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </section>
+
+      {loading ? (
+        <div className="flex flex-col items-center justify-center p-12 mt-12 space-y-6">
+          <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+          <p className="text-lg font-medium text-muted-foreground animate-pulse">Loading regional insights...</p>
+        </div>
+      ) : (
+        <>
 
       <section className="px-6 max-w-7xl mx-auto w-full mb-24">
         <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col overflow-hidden">
@@ -288,6 +296,8 @@ export default function ProductInsight() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </div>
   );
 }
