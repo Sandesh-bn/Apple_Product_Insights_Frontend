@@ -57,7 +57,7 @@ const productImages = {
 };
 
 const getProductImage = (model) => {
-  const filename = productImages[model] || "iphone.png";
+  const filename = productImages[model] || "";
   return new URL(`../assets/${filename}`, import.meta.url).href;
 };
 
