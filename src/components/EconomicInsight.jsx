@@ -81,226 +81,218 @@ export default function EconomicInsight() {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Price Correlations</h1>
-          <p className="text-muted-foreground">
-            Analyze the relationship between different product categories across countries.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 p-1 rounded-lg border border-slate-200">
+    <div className="flex flex-col w-full pb-24">
+      {/* Header Section */}
+      <section className="pt-24 pb-12 px-6 flex flex-col items-center text-center">
+        <h1 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-4 text-foreground">
+          Price Correlations
+        </h1>
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-12 max-w-2xl">
+          Analyze the relationship between different product categories across countries.
+        </p>
+
+        <div className="flex flex-col md:flex-row items-center gap-4 bg-secondary/50 p-2 rounded-[2rem] shadow-sm">
           <Select value={modelA} onValueChange={setModelA}>
-            <SelectTrigger className="w-[180px] text-base  border-none shadow-none">
+            <SelectTrigger className="w-[200px] text-base h-12 bg-card rounded-full border-none shadow-sm font-medium">
               <SelectValue placeholder="Product X" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="rounded-2xl border-none shadow-xl">
               {products.map((p) => (
-                <SelectItem  className={"text-base"} key={`A-${p}`} value={p}>
+                <SelectItem className="text-base py-2 cursor-pointer" key={`A-${p}`} value={p}>
                   {p}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <ArrowRightLeft className="w-4 h-4 " />
+          
+          <div className="bg-background rounded-full p-3 shadow-sm text-muted-foreground">
+            <ArrowRightLeft className="w-5 h-5" />
+          </div>
+          
           <Select value={modelB} onValueChange={setModelB}>
-            <SelectTrigger className="w-[180px] text-base border-none shadow-none">
+            <SelectTrigger className="w-[200px] text-base h-12 bg-card rounded-full border-none shadow-sm font-medium">
               <SelectValue placeholder="Product Y" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="rounded-2xl border-none shadow-xl">
               {products.map((p) => (
-                <SelectItem  className={"text-base"} key={`B-${p}`} value={p}>
+                <SelectItem className="text-base py-2 cursor-pointer" key={`B-${p}`} value={p}>
                   {p}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 gap-6">
-        <Card className="border-slate-200 shadow-sm overflow-hidden">
-          <CardHeader className="border-slate-100">
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle>Cross-Product Price Correlation</CardTitle>
-                <CardDescription>
-                  Does an expensive {modelA} mean expensive accessories?
-                </CardDescription>
-              </div>
-              <Badge variant="secondary" className="bg-indigo-100 text-indigo-700 px-3 py-1">
-                {correlationData.length} Countries Compared
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-8 px-6">
-            <div className="h-[500px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart margin={{ top: 20, right: 30, bottom: 40, left: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                  <XAxis 
-                    type="number" 
-                    dataKey="priceA" 
-                    name={modelA} 
-                    unit="$" 
-                    stroke="#64748b" 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  >
-                    <Label value={`${modelA} Price (USD)`} position="insideBottom" offset={-20} style={{ fill: '#64748b', fontWeight: 'bold' }} />
-                  </XAxis>
-                  <YAxis 
-                    type="number" 
-                    dataKey="priceB" 
-                    name={modelB} 
-                    unit="$" 
-                    stroke="#64748b" 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  >
-                    <Label value={`${modelB} Price (USD)`} angle={-90} position="insideLeft" style={{ fill: '#64748b', fontWeight: 'bold' }} />
-                  </YAxis>
-                  <ZAxis type="number" range={[100, 100]} />
-                  <RechartsTooltip 
-                    cursor={{ strokeDasharray: '3 3' }}
-                    content={<CustomTooltip modelA={modelA} modelB={modelB} />}
-                  />
-                  <Scatter 
-                    name="Countries" 
-                    data={correlationData} 
-                    fill="#6366f1" 
-                    fillOpacity={0.6}
-                    stroke="#4f46e5"
-                    strokeWidth={1}
-                  />
-                </ScatterChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="border-slate-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider">Correlation Strength</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm ">
-              A tight cluster along a diagonal line suggests that prices for these two products are highly correlated. If the dots are scattered randomly, the pricing strategies for these categories may be independent.
+      <section className="px-6 max-w-7xl mx-auto w-full mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-card rounded-[2rem] p-8 shadow-sm flex flex-col justify-center border border-border/40">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-4">Correlation Strength</h3>
+            <p className="text-sm text-foreground leading-relaxed">
+              A tight cluster along a diagonal line suggests highly correlated pricing. Scattered dots mean independent strategies.
             </p>
-          </CardContent>
-        </Card>
-        <Card className="border-slate-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold  uppercase tracking-wider">X-Axis Peak</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-black ">
+          </div>
+          <div className="bg-card rounded-[2rem] p-8 shadow-sm flex flex-col justify-center items-center text-center border border-border/40">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-2">X-Axis Peak</h3>
+            <div className="text-4xl font-semibold tracking-tighter text-primary">
               ${Math.max(...correlationData.map(d => d.priceA), 0).toFixed(2)}
             </div>
-            <p className="text-xs  mt-1">Maximum price recorded for {modelA}.</p>
-          </CardContent>
-        </Card>
-        <Card className="border-slate-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold  uppercase tracking-wider">Y-Axis Peak</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-black ">
+            <p className="text-xs text-muted-foreground mt-2 font-medium">{modelA}</p>
+          </div>
+          <div className="bg-card rounded-[2rem] p-8 shadow-sm flex flex-col justify-center items-center text-center border border-border/40">
+            <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-2">Y-Axis Peak</h3>
+            <div className="text-4xl font-semibold tracking-tighter text-primary">
               ${Math.max(...correlationData.map(d => d.priceB), 0).toFixed(2)}
             </div>
-            <p className="text-xs  mt-1">Maximum price recorded for {modelB}.</p>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="grid grid-cols-1 gap-6 mt-10">
-        <Card className="border-slate-200 shadow-sm">
-          <CardHeader className="border-slate-100">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <ShoppingBasket className="w-5 h-5 text-indigo-600" />
-                  The Apple Basket
-                </CardTitle>
-                <CardDescription>
-                  Cumulative cost of multiple items across different countries.
-                </CardDescription>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {basketModels.map((m) => (
-                  <Badge 
-                    key={m} 
-                    className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer flex gap-1 items-center px-3 py-1"
-                    onClick={() => toggleModel(m)}
-                  >
-                    {m} <X className="w-3 h-3" />
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-8">
-            {/* Basket Selector */}
-            <div className="mb-8 overflow-x-auto">
-              <div className="flex gap-2 pb-2">
-                {products.filter(p => !basketModels.includes(p)).slice(0, 8).map(p => (
-                  <button
-                    key={p}
-                    onClick={() => toggleModel(p)}
-                    className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 text-xs font-medium hover:bg-slate-400 transition-colors flex items-center gap-1 "
-                  >
-                    <Check className="w-3 h-3 text-emerald-500" /> Add {p}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <p className="text-xs text-muted-foreground mt-2 font-medium">{modelB}</p>
+          </div>
+        </div>
 
-            <div className="h-[500px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={basketData}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col overflow-hidden">
+          <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-border/50 pb-6">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight mb-2">Cross-Product Scatter Analysis</h2>
+              <p className="text-muted-foreground">Does an expensive {modelA} mean expensive {modelB}?</p>
+            </div>
+            <Badge variant="secondary" className="bg-secondary text-secondary-foreground rounded-full px-4 py-1.5 text-sm font-medium">
+              {correlationData.length} Countries Compared
+            </Badge>
+          </div>
+          
+          <div className="h-[600px] w-full pt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <ScatterChart margin={{ top: 20, right: 30, bottom: 40, left: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.4} />
+                <XAxis 
+                  type="number" 
+                  dataKey="priceA" 
+                  name={modelA} 
+                  unit="$" 
+                  stroke="var(--color-muted-foreground)" 
+                  fontSize={13}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: 'var(--color-foreground)' }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis 
-                    dataKey="country" 
-                    angle={-45} 
-                    textAnchor="end" 
-                    interval={0} 
-                    height={70}
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  />
-                  <YAxis 
-                    tickFormatter={(v) => `$${v}`} 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
-                  />
-                  <RechartsTooltip 
-                    cursor={{fill: 'var(--chart-cursor-fill)'}}
-                    content={<BasketTooltip />}
-                  />
-                  <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: '20px' }} />
-                  {basketModels.map((model, index) => (
+                  <Label value={`${modelA} Price (USD)`} position="insideBottom" offset={-20} style={{ fill: 'var(--color-muted-foreground)', fontWeight: 500, fontSize: 14 }} />
+                </XAxis>
+                <YAxis 
+                  type="number" 
+                  dataKey="priceB" 
+                  name={modelB} 
+                  unit="$" 
+                  stroke="var(--color-muted-foreground)" 
+                  fontSize={13}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: 'var(--color-foreground)' }}
+                >
+                  <Label value={`${modelB} Price (USD)`} angle={-90} position="insideLeft" offset={0} style={{ fill: 'var(--color-muted-foreground)', fontWeight: 500, fontSize: 14 }} />
+                </YAxis>
+                <ZAxis type="number" range={[150, 150]} />
+                <RechartsTooltip 
+                  cursor={{ strokeDasharray: '3 3', stroke: 'var(--color-border)' }}
+                  content={<CustomTooltip modelA={modelA} modelB={modelB} />}
+                />
+                <Scatter 
+                  name="Countries" 
+                  data={correlationData} 
+                  fill="var(--color-primary)" 
+                  fillOpacity={0.8}
+                  stroke="var(--color-background)"
+                  strokeWidth={2}
+                />
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 max-w-7xl mx-auto w-full mb-12">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col">
+          <div className="mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight mb-2 flex items-center justify-center md:justify-start gap-3">
+                <ShoppingBasket className="w-8 h-8 text-primary" />
+                The Apple Basket
+              </h2>
+              <p className="text-muted-foreground text-lg">Cumulative cost of multiple items across different countries.</p>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center md:justify-end max-w-lg">
+              {basketModels.map((m) => (
+                <Badge 
+                  key={m} 
+                  className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer flex gap-1 items-center px-4 py-2 rounded-full font-medium"
+                  onClick={() => toggleModel(m)}
+                >
+                  {m} <X className="w-3 h-3 ml-1" />
+                </Badge>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mb-12 overflow-x-auto pb-4">
+            <div className="flex gap-3 justify-center md:justify-start">
+              {products.filter(p => !basketModels.includes(p)).slice(0, 10).map(p => (
+                <button
+                  key={p}
+                  onClick={() => toggleModel(p)}
+                  className="whitespace-nowrap px-5 py-2.5 rounded-full border border-border bg-secondary/50 text-foreground text-sm font-medium hover:bg-secondary hover:border-secondary transition-all flex items-center gap-2 shadow-sm"
+                >
+                  <Check className="w-4 h-4 text-emerald-500" /> Add {p}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="h-[600px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={basketData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.4} />
+                <XAxis 
+                  dataKey="country" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  interval={0} 
+                  height={90}
+                  fontSize={13}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: 'var(--color-foreground)' }}
+                  dy={20}
+                />
+                <YAxis 
+                  tickFormatter={(v) => `$${v}`} 
+                  fontSize={13}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: 'var(--color-muted-foreground)' }}
+                />
+                <RechartsTooltip 
+                  cursor={{fill: 'var(--color-secondary)'}}
+                  content={<BasketTooltip />}
+                />
+                <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: '30px' }} iconType="circle" />
+                {basketModels.map((model, index) => {
+                  const colors = ['var(--color-primary)', 'var(--color-ring)', 'var(--color-destructive)', 'var(--color-muted-foreground)', 'var(--color-chart-2)'];
+                  return (
                     <Bar
                       key={model}
                       dataKey={model}
                       stackId="a"
-                      fill={['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b'][index % 5]}
-                      radius={index === basketModels.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                      fill={colors[index % colors.length]}
+                      radius={index === basketModels.length - 1 ? [8, 8, 0, 0] : [0, 0, 0, 0]}
                     />
-                  ))}
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                  );
+                })}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

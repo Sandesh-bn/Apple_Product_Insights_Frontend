@@ -108,212 +108,186 @@ export default function ProductInsight() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Regional Price Analysis</h1>
-          <p className="text-muted-foreground">
-            Explore price consistency and distribution across global regions.
-          </p>
-        </div>
-        <div className="w-[280px]">
+    <div className="flex flex-col w-full pb-24">
+      {/* Header Section */}
+      <section className="pt-24 pb-12 px-6 flex flex-col items-center text-center">
+        <h1 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-4 text-foreground">
+          Regional Analysis
+        </h1>
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-10 max-w-2xl">
+          Explore price consistency and distribution across global regions.
+        </p>
+        <div className="w-full max-w-[300px] mx-auto mb-8">
           <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-            <SelectTrigger className="bg-white text-base">
+            <SelectTrigger className="text-lg rounded-full h-14 bg-secondary/80 hover:bg-secondary border-none px-6 transition-colors shadow-sm font-medium mx-auto flex justify-center text-center gap-2">
               <SelectValue placeholder="Select a product" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="rounded-2xl shadow-xl border-none">
               {products.map((p) => (
-                <SelectItem className={"text-base"} key={p} value={p}>
+                <SelectItem className="text-base py-3 cursor-pointer justify-center text-center" key={p} value={p}>
                   {p}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </section>
 
-      <Card className="border-slate-200 shadow-sm overflow-hidden">
-        <CardHeader className="border-slate-100">
-          <div className="flex items-center gap-2">
-            <CardTitle>Box and Whisker Plots by Region</CardTitle>
-            <Badge variant="outline" className="bg-white flex gap-1 text-base items-center">
-              <Info className="w-3 h-3" /> {selectedProduct}
-            </Badge>
-          </div>
-          <CardDescription>
-            Visualizing median, quartiles, and price ranges. Whiskers show min/max; the box shows the interquartile range (IQR).
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-10 pb-6 overflow-x-auto">
-          <div className="min-w-[800px] h-[450px] relative flex items-end justify-around px-10">
-            {/* Y-Axis Labels */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col justify-between text-[10px] font-bold border-r border-slate-100 pr-2">
-              <span>${globalMax.toFixed(0)}</span>
-              <span>${((globalMax + globalMin) / 2).toFixed(0)}</span>
-              <span>${globalMin.toFixed(0)}</span>
+      <section className="px-6 max-w-7xl mx-auto w-full mb-24">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col overflow-hidden">
+          <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight mb-2 flex items-center gap-3">
+                Price Variance (Box Plot)
+                <Badge variant="secondary" className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm font-medium">
+                  {selectedProduct}
+                </Badge>
+              </h2>
+              <p className="text-muted-foreground">Visualizing median, quartiles, and price ranges across regions.</p>
             </div>
-
-            {stats.map((region, index) => (
-              <div key={region.region} className="flex flex-col items-center group w-32">
-                {/* The Plot Area */}
-                <div className="relative w-full h-[350px] mb-4">
-                  {/* Vertical line (Whisker) */}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 bg-slate-300 w-[2px]"
-                    style={{
-                      top: `${getY(region.max)}%`,
-                      bottom: `${100 - getY(region.min)}%`
-                    }}
-                  ></div>
-
-                  {/* Top Whisker Tip */}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 bg-slate-400 h-[2px] w-8"
-                    style={{ top: `${getY(region.max)}%` }}
-                  ></div>
-
-                  {/* Bottom Whisker Tip */}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 bg-slate-400 h-[2px] w-8"
-                    style={{ top: `${getY(region.min)}%` }}
-                  ></div>
-
-                  {/* The Box (IQR) */}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 w-16 border-2 border-indigo-600 bg-indigo-50/80 rounded-sm shadow-sm group-hover:bg-indigo-100 transition-colors"
-                    style={{
-                      top: `${getY(region.q3)}%`,
-                      height: `${getY(region.q1) - getY(region.q3)}%`
-                    }}
-                  >
-                    {/* Median Line */}
-                    <div
-                      className="absolute left-0 right-0 h-[3px] bg-indigo-800"
-                      style={{ top: `${((getY(region.median) - getY(region.q3)) / (getY(region.q1) - getY(region.q3))) * 100}%` }}
-                    ></div>
-                  </div>
-
-                  {/* Tooltip on Hover */}
-                  <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white p-3 rounded-lg text-[10px] z-20 -top-16 left-1/2 -translate-x-1/2 pointer-events-none whitespace-nowrap shadow-2xl border border-slate-700">
-                    <div className="font-bold border-b border-slate-700 mb-2 pb-1 text-xs">{region.region}</div>
-                    <div className="space-y-0.5">
-                      <div className="flex justify-between gap-4"><span>Max:</span> <span className="font-mono font-bold">${region.max?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4 "><span>Q3:</span> <span className="font-mono">${region.q3?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4 text-indigo-300 font-bold"><span>Median:</span> <span className="font-mono">${region.median?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4"><span>Q1:</span> <span className="font-mono">${region.q1?.toFixed(2) || "0.00"}</span></div>
-                      <div className="flex justify-between gap-4"><span>Min:</span> <span className="font-mono font-bold">${region.min?.toFixed(2) || "0.00"}</span></div>
-                    </div>
-                    <div className="mt-2 pt-1 border-t border-slate-700 text-[9px] text-center">
-                      Sample: {region.count} countries
-                    </div>
-                  </div>
-                </div>
-
-                {/* Label */}
-                <div className="text-[11px] font-bold text-center px-1 leading-tight h-8 flex items-center">
-                  {region.region}
-                </div>
-              </div>
-            ))}
           </div>
-        </CardContent>
-      </Card>
+          <div className="w-full overflow-x-auto pb-6">
+            <div className="min-w-[800px] h-[500px] relative flex items-end justify-around px-10">
+              {/* Y-Axis Labels */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 flex flex-col justify-between text-xs font-semibold text-muted-foreground border-r border-border pr-3">
+                <span>${globalMax.toFixed(0)}</span>
+                <span>${((globalMax + globalMin) / 2).toFixed(0)}</span>
+                <span>${globalMin.toFixed(0)}</span>
+              </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <Card className="border-slate-200">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase tracking-wide">Key Observation</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm">
-              The height of the indigo box represents the **Interquartile Range (IQR)**. A taller box indicates higher price variability within that region, while a shorter box suggests more consistent pricing across member countries.
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-slate-200">
-          <CardHeader>
-            <CardTitle className="text-sm uppercase tracking-wide">Outlier Analysis</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm">
-              Whiskers extending far beyond the box indicate extreme price differences in certain countries. For example, Brazil often acts as a significant outlier in the Latin America region due to high import taxes.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+              {stats.map((region, index) => (
+                <div key={region.region} className="flex flex-col items-center group w-32 mt-4">
+                  <div className="relative w-full h-[400px] mb-6">
+                    {/* Whisker Line */}
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 bg-border w-[2px]"
+                      style={{
+                        top: `${getY(region.max)}%`,
+                        bottom: `${100 - getY(region.min)}%`
+                      }}
+                    ></div>
 
-      <Card className="border-slate-200 shadow-sm mt-8">
-        <CardHeader className="border-slate-100">
-          <CardTitle>Global Market Hierarchy (Treemap)</CardTitle>
-          <CardDescription>
-            Box size represents the USD price. Grouped by region and country.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <div className="h-[500px]">
+                    {/* Top Whisker Tip */}
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 bg-muted-foreground h-[2px] w-6"
+                      style={{ top: `${getY(region.max)}%` }}
+                    ></div>
+
+                    {/* Bottom Whisker Tip */}
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 bg-muted-foreground h-[2px] w-6"
+                      style={{ top: `${getY(region.min)}%` }}
+                    ></div>
+
+                    {/* Box (IQR) */}
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 w-14 bg-primary/20 border-2 border-primary rounded-md shadow-sm group-hover:bg-primary/30 transition-colors backdrop-blur-sm"
+                      style={{
+                        top: `${getY(region.q3)}%`,
+                        height: `${Math.max(getY(region.q1) - getY(region.q3), 1)}%`
+                      }}
+                    >
+                      {/* Median Line */}
+                      <div
+                        className="absolute left-0 right-0 h-[2px] bg-primary"
+                        style={{ top: `${((getY(region.median) - getY(region.q3)) / (getY(region.q1) - getY(region.q3))) * 100}%` }}
+                      ></div>
+                    </div>
+
+                    {/* Tooltip */}
+                    <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-popover/90 backdrop-blur-md text-popover-foreground p-4 rounded-2xl z-20 -top-20 left-1/2 -translate-x-1/2 pointer-events-none whitespace-nowrap shadow-xl border-none">
+                      <div className="font-semibold mb-3 pb-2 border-b border-border/50 text-base">{region.region}</div>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between gap-6 text-muted-foreground"><span>Max:</span> <span className="font-mono font-medium text-foreground">${region.max?.toFixed(2)}</span></div>
+                        <div className="flex justify-between gap-6 text-muted-foreground"><span>Q3:</span> <span className="font-mono font-medium text-foreground">${region.q3?.toFixed(2)}</span></div>
+                        <div className="flex justify-between gap-6 font-semibold text-primary"><span>Median:</span> <span className="font-mono">${region.median?.toFixed(2)}</span></div>
+                        <div className="flex justify-between gap-6 text-muted-foreground"><span>Q1:</span> <span className="font-mono font-medium text-foreground">${region.q1?.toFixed(2)}</span></div>
+                        <div className="flex justify-between gap-6 text-muted-foreground"><span>Min:</span> <span className="font-mono font-medium text-foreground">${region.min?.toFixed(2)}</span></div>
+                      </div>
+                      <div className="mt-3 pt-2 border-t border-border/50 text-xs text-center text-muted-foreground">
+                        {region.count} countries sampled
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-sm font-medium text-center px-1 leading-tight text-foreground/80">
+                    {region.region}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 max-w-7xl mx-auto w-full mb-24">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col">
+          <div className="mb-10 text-center md:text-left">
+            <h2 className="text-3xl font-semibold tracking-tight mb-2">Global Market Hierarchy</h2>
+            <p className="text-muted-foreground text-lg">Proportional pricing visualization by region and country.</p>
+          </div>
+          <div className="h-[600px] w-full rounded-[2rem] overflow-hidden bg-secondary/30">
             <ResponsiveContainer width="100%" height="100%">
               <Treemap
                 data={treemapData}
                 dataKey="size"
                 aspectRatio={4 / 3}
-                stroke="#fff"
-                fill="#8884d8"
+                stroke="var(--color-background)"
+                fill="var(--color-primary)"
                 content={<CustomTreemapContent />}
               >
-                <RechartsTooltip
-                  content={<CustomTooltip />}
-                />
+                <RechartsTooltip content={<CustomTooltip />} />
               </Treemap>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card className="border-slate-200 shadow-sm mt-8 mb-10">
-        <CardHeader className="border-slate-100">
-          <CardTitle>Pricing by Income Group</CardTitle>
-          <CardDescription>
-            Average prices of popular models compared across High, Upper-Middle, and Lower-Middle income tiers.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-8">
-          <div className="h-[400px]">
+      <section className="px-6 max-w-7xl mx-auto w-full mb-12">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col">
+          <div className="mb-10 text-center md:text-left">
+            <h2 className="text-3xl font-semibold tracking-tight mb-2">Pricing by Income Group</h2>
+            <p className="text-muted-foreground text-lg">Average prices of popular models compared across economic tiers.</p>
+          </div>
+          <div className="h-[500px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={incomeStats}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.4} />
                 <XAxis
                   dataKey="incomeGroup"
                   axisLine={false}
                   tickLine={false}
-                  fontSize={12}
-                  fontWeight="bold"
-                  tick={{ fill: '#64748b' }}
+                  fontSize={14}
+                  fontWeight="500"
+                  tick={{ fill: 'var(--color-foreground)' }}
+                  dy={10}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  fontSize={12}
+                  fontSize={13}
                   tickFormatter={(value) => `$${value}`}
-                  tick={{ fill: '#64748b' }}
+                  tick={{ fill: 'var(--color-muted-foreground)' }}
+                  dx={-10}
                 />
                 <RechartsTooltip
-                  cursor={{ fill: 'var(--chart-cursor-fill)' }}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
+                  cursor={{ fill: 'var(--color-secondary)' }}
+                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', padding: '16px', backgroundColor: 'var(--color-popover)', color: 'var(--color-popover-foreground)' }}
                   formatter={(value) => [`$${value.toFixed(2)}`, "Avg. Price"]}
                 />
-                <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                <Bar dataKey="iPhone 13" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="iPhone SE" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="iPad" fill="#ec4899" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="MacBook Air" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                <Legend iconType="circle" wrapperStyle={{ paddingTop: '30px' }} />
+                <Bar dataKey="iPhone 13" fill="var(--color-primary)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="iPhone SE" fill="var(--color-ring)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="iPad" fill="var(--color-destructive)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="MacBook Air" fill="var(--color-muted-foreground)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }

@@ -114,19 +114,21 @@ export default function DataExplorer() {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Data Explorer</h1>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col w-full pb-24">
+      <section className="pt-24 pb-12 px-6 flex flex-col items-center text-center">
+        <h1 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-4 text-foreground">
+          Data Explorer
+        </h1>
+        <p className="text-xl md:text-2xl text-muted-foreground font-medium mb-10 max-w-2xl">
           Browse and filter the complete Apple product pricing dataset.
         </p>
-      </div>
+      </section>
 
-      <Card className="border-slate-200 shadow-sm">
-        <CardHeader className="pb-3">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <section className="px-6 max-w-7xl mx-auto w-full mb-12">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col">
+          <div className="mb-10 flex flex-col xl:flex-row xl:items-center justify-between gap-6 bg-secondary/30 p-4 md:p-6 rounded-[2rem]">
+            <div className="relative flex-1 max-w-xl">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 placeholder="Search products or countries..."
                 value={searchTerm}
@@ -134,59 +136,64 @@ export default function DataExplorer() {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="pl-9 bg-white"
+                className="pl-12 bg-background border-none shadow-sm h-14 rounded-full text-lg w-full"
               />
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-3">
               <Select value={regionFilter} onValueChange={(val) => { setRegionFilter(val); setCurrentPage(1); }}>
-                <SelectTrigger className="w-[160px] bg-white">
+                <SelectTrigger className="w-full sm:w-[180px] bg-background border-none shadow-sm h-14 rounded-full text-base font-medium px-6">
                   <SelectValue placeholder="Region" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl border-none shadow-xl">
                   <SelectItem value="all">All Regions</SelectItem>
                   {uniqueRegions.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
                 </SelectContent>
               </Select>
 
               <Select value={incomeFilter} onValueChange={(val) => { setIncomeFilter(val); setCurrentPage(1); }}>
-                <SelectTrigger className="w-[160px] bg-white">
+                <SelectTrigger className="w-full sm:w-[200px] bg-background border-none shadow-sm h-14 rounded-full text-base font-medium px-6">
                   <SelectValue placeholder="Income Group" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl border-none shadow-xl">
                   <SelectItem value="all">All Income Groups</SelectItem>
                   {uniqueIncomeGroups.map(i => <SelectItem key={i} value={i}>{i}</SelectItem>)}
                 </SelectContent>
               </Select>
 
-              <Button variant="outline" size="icon" onClick={resetFilters} title="Reset Filters">
-                <FilterX className="h-4 w-4" />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={resetFilters} 
+                title="Reset Filters"
+                className="h-14 w-14 rounded-full bg-background border-none shadow-sm hover:bg-secondary transition-colors"
+              >
+                <FilterX className="h-5 w-5" />
               </Button>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-md border border-slate-100 overflow-hidden">
+
+          <div className="rounded-[1.5rem] overflow-hidden bg-background border border-border/50">
             <Table>
-              <TableHeader className="bg-slate-50/50">
-                <TableRow>
-                  <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => requestSort("model")}>
+              <TableHeader className="bg-secondary/40">
+                <TableRow className="border-border/50 hover:bg-transparent">
+                  <TableHead className="cursor-pointer hover:text-primary transition-colors py-5 px-6 font-semibold" onClick={() => requestSort("model")}>
                     <div className="flex items-center gap-2">
                       Product Name
-                      <ArrowUpDown className="h-3 w-3" />
+                      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </TableHead>
-                  <TableHead>Country</TableHead>
-                  <TableHead>Region</TableHead>
-                  <TableHead className="cursor-pointer hover:text-primary transition-colors" onClick={() => requestSort("incomeGroup")}>
+                  <TableHead className="py-5 px-6 font-semibold">Country</TableHead>
+                  <TableHead className="py-5 px-6 font-semibold">Region</TableHead>
+                  <TableHead className="cursor-pointer hover:text-primary transition-colors py-5 px-6 font-semibold" onClick={() => requestSort("incomeGroup")}>
                     <div className="flex items-center gap-2">
                       Income Group
-                      <ArrowUpDown className="h-3 w-3" />
+                      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </TableHead>
-                  <TableHead className="text-right cursor-pointer hover:text-primary transition-colors" onClick={() => requestSort("price_usd")}>
+                  <TableHead className="text-right cursor-pointer hover:text-primary transition-colors py-5 px-6 font-semibold" onClick={() => requestSort("price_usd")}>
                     <div className="flex items-center justify-end gap-2">
                       Price (USD)
-                      <ArrowUpDown className="h-3 w-3" />
+                      <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </TableHead>
                 </TableRow>
@@ -194,41 +201,41 @@ export default function DataExplorer() {
               <TableBody>
                 {loading ? (
                   Array.from({ length: 10 }).map((_, i) => (
-                    <TableRow key={i}>
-                      <TableCell><Skeleton className="h-5 w-40" /></TableCell>
-                      <TableCell><Skeleton className="h-5 w-24" /></TableCell>
-                      <TableCell><Skeleton className="h-5 w-32" /></TableCell>
-                      <TableCell><Skeleton className="h-5 w-28" /></TableCell>
-                      <TableCell className="text-right"><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
+                    <TableRow key={i} className="border-border/50">
+                      <TableCell className="px-6 py-4"><Skeleton className="h-6 w-40" /></TableCell>
+                      <TableCell className="px-6 py-4"><Skeleton className="h-6 w-24" /></TableCell>
+                      <TableCell className="px-6 py-4"><Skeleton className="h-6 w-32" /></TableCell>
+                      <TableCell className="px-6 py-4"><Skeleton className="h-6 w-28" /></TableCell>
+                      <TableCell className="px-6 py-4 text-right"><Skeleton className="h-6 w-20 ml-auto" /></TableCell>
                     </TableRow>
                   ))
                 ) : paginatedData.length > 0 ? (
                   paginatedData.map((item, idx) => (
-                    <TableRow key={item._id || idx} className="hover:bg-slate-50/50 transition-colors">
-                      <TableCell className="font-medium">{item.model}</TableCell>
-                      <TableCell>{item.country}</TableCell>
-                      <TableCell>
-                        <span className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap">
+                    <TableRow key={item._id || idx} className="hover:bg-secondary/20 transition-colors border-border/50">
+                      <TableCell className="font-semibold px-6 py-4 text-base">{item.model}</TableCell>
+                      <TableCell className="px-6 py-4 text-muted-foreground font-medium">{item.country}</TableCell>
+                      <TableCell className="px-6 py-4">
+                        <span className="text-xs px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground font-medium whitespace-nowrap">
                           {item.region}
                         </span>
                       </TableCell>
-                      <TableCell>
-                         <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                           item.incomeGroup === 'High income' ? 'bg-blue-100 text-blue-700' :
-                           item.incomeGroup === 'Upper middle income' ? 'bg-purple-100 text-purple-700' :
-                           'bg-orange-100 text-orange-700'
+                      <TableCell className="px-6 py-4">
+                         <span className={`text-xs px-3 py-1.5 rounded-full font-semibold uppercase tracking-wider ${
+                           item.incomeGroup === 'High income' ? 'bg-primary/10 text-primary' :
+                           item.incomeGroup === 'Upper middle income' ? 'bg-ring/10 text-ring' :
+                           'bg-destructive/10 text-destructive'
                          }`}>
                            {item.incomeGroup}
                          </span>
                       </TableCell>
-                      <TableCell className="text-right font-mono font-bold text-indigo-600">
+                      <TableCell className="text-right font-mono font-bold text-lg px-6 py-4">
                         ${item.price_usd.toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center text-muted-foreground italic">
+                    <TableCell colSpan={5} className="h-32 text-center text-muted-foreground font-medium text-lg">
                       No matching data found.
                     </TableCell>
                   </TableRow>
@@ -237,36 +244,38 @@ export default function DataExplorer() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between mt-4">
-            <div className="text-sm text-muted-foreground">
-              Showing <span className="font-medium">{paginatedData.length}</span> of <span className="font-medium">{sortedData.length}</span> entries
+          <div className="flex flex-col sm:flex-row items-center justify-between mt-8 gap-4 px-2">
+            <div className="text-base text-muted-foreground font-medium">
+              Showing <span className="text-foreground">{paginatedData.length}</span> of <span className="text-foreground">{sortedData.length}</span> entries
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4 bg-secondary/30 p-2 rounded-full">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1 || loading}
+                className="rounded-full border-none bg-background shadow-sm h-10 px-4 hover:bg-secondary hover:text-foreground transition-all font-medium"
               >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Previous
+                <ChevronLeft className="h-5 w-5 mr-1" />
+                Prev
               </Button>
-              <div className="flex items-center justify-center min-w-[80px] text-sm font-medium">
-                Page {currentPage} of {totalPages || 1}
+              <div className="flex items-center justify-center min-w-[60px] text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+                {currentPage} / {totalPages || 1}
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages || totalPages === 0 || loading}
+                className="rounded-full border-none bg-background shadow-sm h-10 px-4 hover:bg-secondary hover:text-foreground transition-all font-medium"
               >
                 Next
-                <ChevronRight className="h-4 w-4 ml-1" />
+                <ChevronRight className="h-5 w-5 ml-1" />
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }

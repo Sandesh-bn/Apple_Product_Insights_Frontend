@@ -6,101 +6,87 @@ import { User, Mail, Shield, Bell, Settings } from "lucide-react";
 
 export default function Profile() {
   return (
-    <div className="space-y-8 animate-in zoom-in-95 duration-500">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Profile Settings</h1>
-        <p className="text-muted-foreground mt-2">Manage your account preferences and security.</p>
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary">
-                  <User className="h-12 w-12 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold">John Doe</h2>
-                  <p className="text-sm text-muted-foreground italic">Chief Analyst</p>
-                </div>
-                <div className="w-full pt-4 space-y-2">
-                   <div className="flex items-center justify-between text-xs font-medium uppercase text-muted-foreground tracking-tighter">
-                      <span>Account Level</span>
-                      <span className="text-primary">Enterprise</span>
-                   </div>
-                   <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-primary w-3/4" />
-                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    <div className="flex flex-col w-full pb-24 items-center">
+      {/* Header Section */}
+      <section className="pt-24 pb-12 px-6 flex flex-col items-center text-center w-full">
+        <div className="w-32 h-32 rounded-full bg-secondary/80 flex items-center justify-center mb-6 shadow-sm">
+          <User className="h-14 w-14 text-muted-foreground" />
         </div>
+        <h1 className="text-5xl md:text-6xl font-semibold tracking-tighter mb-4 text-foreground">
+          John Doe
+        </h1>
+        <p className="text-xl text-muted-foreground font-medium mb-4">
+          john.doe@example.com
+        </p>
+        <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide">
+          Enterprise Account
+        </span>
+      </section>
 
-        <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                Personal Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" defaultValue="John Doe" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" defaultValue="john.doe@example.com" type="email" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bio">Professional Bio</Label>
-                <textarea 
-                   id="bio" 
-                   className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                   defaultValue="Passionate analyst focusing on global tech markets and economic shifts."
+      <section className="px-6 w-full max-w-4xl mb-12">
+        <div className="bg-card rounded-[2.5rem] p-8 md:p-12 shadow-sm flex flex-col border border-border/40 gap-8">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight mb-6">Personal Information</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-muted-foreground font-medium pl-2">Full Name</Label>
+                <Input 
+                  id="name" 
+                  defaultValue="John Doe" 
+                  className="h-14 rounded-2xl bg-secondary/30 border-none px-6 text-lg font-medium shadow-sm focus-visible:ring-1 focus-visible:ring-primary"
                 />
               </div>
-            </CardContent>
-            <CardFooter className="justify-end border-t border-border pt-6">
-              <Button>Save Changes</Button>
-            </CardFooter>
-          </Card>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-muted-foreground font-medium pl-2">Email Address</Label>
+                <Input 
+                  id="email" 
+                  defaultValue="john.doe@example.com" 
+                  type="email" 
+                  className="h-14 rounded-2xl bg-secondary/30 border-none px-6 text-lg font-medium shadow-sm focus-visible:ring-1 focus-visible:ring-primary"
+                />
+              </div>
+            </div>
+            <div className="space-y-3 mt-6">
+              <Label htmlFor="bio" className="text-muted-foreground font-medium pl-2">Professional Bio</Label>
+              <textarea 
+                 id="bio" 
+                 className="flex min-h-[120px] w-full rounded-2xl bg-secondary/30 border-none px-6 py-4 text-lg font-medium shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary resize-none"
+                 defaultValue="Passionate analyst focusing on global tech markets and economic shifts."
+              />
+            </div>
+          </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-             <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
-                <CardContent className="">
-                   <div className="flex items-center gap-4">
-                      <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 group-hover:scale-110 transition-transform">
-                         <Shield className="h-5 w-5" />
-                      </div>
-                      <div>
-                         <p className="font-semibold text-sm">Security</p>
-                         <p className="text-xs text-muted-foreground">Manage your passwords</p>
-                      </div>
-                   </div>
-                </CardContent>
-             </Card>
-             <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
-                <CardContent >
-                   <div className="flex items-center gap-4">
-                      <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 group-hover:scale-110 transition-transform">
-                         <Bell className="h-5 w-5" />
-                      </div>
-                      <div>
-                         <p className="font-semibold text-sm">Notifications</p>
-                         <p className="text-xs text-muted-foreground">Configure alerts</p>
-                      </div>
-                   </div>
-                </CardContent>
-             </Card>
+          <div className="flex justify-end pt-4">
+            <Button className="h-12 px-8 rounded-full text-base font-semibold">
+              Save Changes
+            </Button>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="px-6 w-full max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div className="bg-card rounded-[2rem] p-6 flex items-center gap-6 shadow-sm border border-border/40 cursor-pointer hover:bg-secondary/20 transition-colors group">
+              <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center group-hover:scale-105 transition-transform">
+                 <Shield className="h-6 w-6 text-foreground" />
+              </div>
+              <div>
+                 <p className="font-semibold text-xl tracking-tight mb-1">Security</p>
+                 <p className="text-muted-foreground font-medium">Manage your passwords</p>
+              </div>
+           </div>
+           
+           <div className="bg-card rounded-[2rem] p-6 flex items-center gap-6 shadow-sm border border-border/40 cursor-pointer hover:bg-secondary/20 transition-colors group">
+              <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center group-hover:scale-105 transition-transform">
+                 <Bell className="h-6 w-6 text-foreground" />
+              </div>
+              <div>
+                 <p className="font-semibold text-xl tracking-tight mb-1">Notifications</p>
+                 <p className="text-muted-foreground font-medium">Configure alerts</p>
+              </div>
+           </div>
+        </div>
+      </section>
     </div>
   );
 }

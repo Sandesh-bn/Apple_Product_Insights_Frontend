@@ -1,21 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import TopNav from "./TopNav";
 import { useTheme } from "./ThemeProvider";
 
 export default function Layout() {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
-    <div className="flex h-screen bg-background transition-colors duration-300">
-      <Sidebar />
-      <main className={`flex-1 flex flex-col min-w-0 overflow-hidden ${theme === "dark" ? "blue-gradient" : "bg-gray-100"
-        }`}>
-      <div className="flex-1 overflow-y-auto p-4 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-8">
-          <Outlet />
-        </div>
-      </div>
-    </main>
-    </div >
+    <div className="flex flex-col min-h-screen bg-background transition-colors duration-300 font-sans">
+      <TopNav />
+      <main className="flex-1 flex flex-col w-full pt-14">
+        <Outlet />
+      </main>
+    </div>
   );
 }
